@@ -1,3 +1,7 @@
+import nltk as tk
+from inspect import currentframe, getframeinfo
+
+
 #definicion de componentes
 comandos = ["M","R","C","B","c","b","P","J","G"] 
 instrucciones = ["assignTo", "goto", "move", "turn", "face", "put", "pick", "moveToThe", "moveInDir", "jumpToThe", "jumpInDir", "nop", "PROCS"]
@@ -10,6 +14,11 @@ def main():
     file = open(filename).read()
     tokens = tk.word_tokenize(file,"",True)
     parser(tokens)
+
+
+def syntaxError(frameinfo):
+    print("Error de sintaxis detectado: ", frameinfo.lineno)
+    exit()
 
 
 #def parser(tokens):
