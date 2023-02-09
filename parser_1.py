@@ -3,11 +3,15 @@ from inspect import currentframe, getframeinfo
 
 
 #definicion de componentes
-comandos = ["M","R","C","B","c","b","P","J","G"] 
-instrucciones = ["assignTo", "goto", "move", "turn", "face", "put", "pick", "moveToThe", "moveInDir", "jumpToThe", "jumpInDir", "nop", "ROBOT_R"]
-condiciones = ["facing", "canPut", "canPick","canMoveInDir", "canJumpInDir", "canMoveToThe", "canJumpToThe", "not"]
-funcionesCondicionales = ["while", "do", "if", "od", "fi", "else"]
-direcciones = ["left","right","front","back"]
+comandos = ['M','R','C','B','c','b','P','J','G']
+keywords = ['ROBOT_R','VARS','PROCS']
+instrucciones = ['assignTo','goto','move','turn','face','put','pick','moveToThe','moveInDir','jumpToThe','jumpInDir','nop']
+control = ['if','then','else','while','do','repeat']
+condiciones = ['facing','canPut','canPick','canMoveInDir','canJumpInDir','canMoveToThe','canJumpToThe','not']
+direcciones1 = ['front','right','left','back']
+direcciones2 = ['right','left','around']
+card = ['north','east','west','south']
+
 
 def main():
     filename = 'archivoPrueba1.txt'
