@@ -18,6 +18,16 @@ funciones = {}
 #Lista donde se guardaran las variables
 variables = []
 
+#Lista donde se guardaran las direcciones1
+direcciones1 = []
+
+#Lista donde se guardaran las direcciones2
+direcciones2 = []
+
+
+#Lista donde se guardaran las cardinalidades
+cards = []
+
 def main():
     filename = 'archivoPrueba1.txt'
     file = open(filename).read()
@@ -187,12 +197,211 @@ def verificarGoTo(tokens:list, posicion: int, correcto: bool, variables: list):
     return correcto, posicion
 
 
+def verificarMove(tokens:list, posicion: int, correcto: bool, variables: list):
+
+    inVariable = False
+    for i in variables:
+        if tokens[posicion] == i:
+            inVariable = True
+            break
+
+    if tokens[posicion].isdigit() or inVariable:
+        posicion += 1
+
+    else:
+        correcto = False
+
+    return correcto, posicion
+
+def verificarTurn(tokens:list, posicion: int, correcto: bool, direcciones2: list):
+
+    inDireccion2 = False
+    for i in direcciones2:
+        if tokens[posicion] == i:
+            inDireccion2 = True
+            break
+
+    if inDireccion2:
+        posicion += 1
+
+    else:
+        correcto = False
+
+    return correcto, posicion
+
+def verificarFace(tokens:list, posicion: int, correcto: bool, cards: list):
+
+    cardinalidad = False
+    for i in cards:
+        if tokens[posicion] == i:
+            cardinalidad = True
+            break
+
+    if cardinalidad:
+        posicion += 1
+
+    else:
+        correcto = False
+
+    return correcto, posicion
+
+def verificarPut(tokens:list, posicion: int, correcto: bool, variables: list):
+
+    inVariable = False
+    for i in variables:
+        if tokens[posicion] == i:
+            inVariable = True
+            break
+
+    if tokens[posicion].isdigit() or inVariable:
+        posicion += 1
+        if tokens[posicion] == ",":
+            posicion += 1
+            if tokens[posicion] == "ballons" or tokens[posicion] == "chips":
+                posicion += 1
+            else:
+                correcto = False
+        else:
+                correcto = False
+    else:
+                correcto = False
+
+    return correcto, posicion
+
+def verificarPick(tokens:list, posicion: int, correcto: bool, variables: list):
+    inVariable = False
+    for i in variables:
+        if tokens[posicion] == i:
+            inVariable = True
+            break
+
+    if tokens[posicion].isdigit() or inVariable:
+        posicion += 1
+        if tokens[posicion] == ",":
+            posicion += 1
+            if tokens[posicion] == "ballons" or tokens[posicion] == "chips":
+                posicion += 1
+            else:
+                correcto = False
+        else:
+                correcto = False
+    else:
+                correcto = False
+                
+    return correcto, posicion
+
+def verificarMoveToThe(tokens:list, posicion: int, correcto: bool, variables: list, direcciones1: list):
+    inVariable = False
+    for i in variables:
+        if tokens[posicion] == i:
+            inVariable = True
+            break
+    
+    if tokens[posicion].isdigit() or inVariable:
+        posicion += 1
+        if tokens[posicion] == ",":
+            posicion += 1
+            for i in direcciones1:
+                if tokens[posicion] == i:
+                    posicion += 1
+                    correcto = True
+                    break
+                else:
+                    correcto = False
+            else:
+                    correcto = False
+        else:
+            correcto = False
+    else:
+                    correcto = False
+
+    return correcto, posicion
     
 
+def verificarMoveInDir(tokens:list, posicion: int, correcto: bool, variables: list, cards: list):
+    
+    inVariable = False
+    for i in variables:
+        if tokens[posicion] == i:
+            inVariable = True
+            break
+
+    cardinalidad = False
+    for i in cards:
+        if tokens[posicion] == i:
+            cardinalidad = True
+            break
+
+    if tokens[posicion].isdigit() or inVariable:
+        posicion += 1
+        if tokens[posicion] == ",":
+            posicion += 1
+            if tokens[posicion] in cardinalidad:
+                posicion += 1
+            else:
+                correcto = False
+        else:
+                correcto = False
+    else:
+                correcto = False
+
+    return correcto, posicion   
+        
+def verificarJumpToThe(tokens:list, posicion: int, correcto: bool, variables: list, direcciones1: list):
+    inVariable = False
+    for i in variables:
+        if tokens[posicion] == i:
+            inVariable = True
+            break
+    
+    if tokens[posicion].isdigit() or inVariable:
+        posicion += 1
+        if tokens[posicion] == ",":
+            posicion += 1
+            for i in direcciones1:
+                if tokens[posicion] == i:
+                    posicion += 1
+                    correcto = True
+                    break
+                else:
+                    correcto = False
+            else:
+                    correcto = False
+        else:
+            correcto = False
+    else:
+                    correcto = False
+
+    return correcto, posicion
+
+def verificarJumpInDir(tokens:list, posicion: int, correcto: bool, variables: list, cards: list):
+    inVariable = False
+    for i in variables:
+        if tokens[posicion] == i:
+            inVariable = True
+            break
+    
+    if tokens[posicion].isdigit() or inVariable:
+        posicion += 1
+        if tokens[posicion] == ",":
+            posicion += 1
+            for i in cards:
+                if tokens[posicion] == i:
+                    posicion += 1
+                    correcto = True
+                    break
+                else:
+                    correcto = False
+            else:
+                    correcto = False
+        else:
+                    correcto = False
+    else:
+                    correcto = False
+
+    return correcto, posicion
 
 
-        
-        
 def parser(tokens:list):
     print(tokens)
     correcto, cont = inKeywords(tokens, keywords)
