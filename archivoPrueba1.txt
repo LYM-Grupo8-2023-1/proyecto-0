@@ -1,8 +1,8 @@
 ROBOT_R
 VARS nom, x, y, one;
 PROCS
-putCB [ |c, b| assingTo: 1, one;
-put : c, chips: put: c , ballons ]
+putCB [ |c, b| assignTo: 1, one;
+put : c, chips; put: c , ballons ]
 
 goNorth  [| |
 while: canMovetoThe: 1 , north do: [ moveInDir: 1, north ]
