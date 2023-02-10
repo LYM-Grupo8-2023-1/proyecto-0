@@ -73,7 +73,7 @@ def comprobarVARS(tokens: list, posLista: int, correcto: bool):
 
 def verificarParametros(tokens: list, posLista: int, correcto: bool, llaveDict: str):
     fin = False
-    if "|" not in tokens[posLista]:
+    if "|" not in tokens[posLista] and correcto == False:
         correcto = False
     else:
         x = tokens[posLista]
@@ -103,26 +103,63 @@ def verificarParametros(tokens: list, posLista: int, correcto: bool, llaveDict: 
                         posLista += 1
                     else:
                         correcto = False
+                else:
+                    posLista += 1
     return correcto, posLista
 
 
 def comprobarPROCS(tokens: list, posLista: int, correcto: bool):
     fin = False
+    if tokens[posLista] == "[":
+        correcto = False
     while correcto == True and fin == False:
         if tokens[posLista].isalnum():
-                llaveDict = tokens[posLista]
-                llaveDict = llaveDict.lower()
-                funciones[llaveDict] = []
+            llaveDict = tokens[posLista]
+            llaveDict = llaveDict.lower()
+            funciones[llaveDict] = []
+            posLista += 1
+            if tokens[posLista] != "[":
+                correcto = False
+                break
+            posLista += 1
+            correcto, posLista = verificarParametros(tokens, posLista, correcto, llaveDict)
+            for ins in instrucciones:
+                if tokens[posLista] == ins:
+                    pass #Arreglar como saber que definicion usar y verificar que despues de encontrar la funcion signan los 2 puntos
+            if tokens[posLista] == "if":
                 posLista += 1
-                if tokens[posLista] != "[":
+                if tokens[posLista] == ":":    
+                    verificarCondicional()
+                else:
                     correcto = False
-                    break
+            elif tokens[posLista] == "while":
                 posLista += 1
-                correcto, posLista = verificarParametros(tokens, posLista, correcto, llaveDict)
+                if tokens[posLista] == ":":    
+                    verificarLoop()
+                else:
+                    correcto = False
+            elif tokens[posLista] == "repeat":
+                posLista += 1
+                if tokens[posLista] == ":":    
+                    verificarRepeat()
+                else:
+                    correcto = False
+            if tokens[posLista] == "[":
+                fin = True
+                posLista += 1
         else:
             correcto = False
         
     return correcto, posLista
+
+def verificarCondicional():
+    pass #Arreglar como saber que condicion usar
+
+def verificarLoop():
+    pass #Arreglar como saber que condicion usar
+
+def verificarRepeat():
+    pass #Arreglar como saber que condicion usar
 
 def inKeywords(tokens:list, keywords:list):
 
