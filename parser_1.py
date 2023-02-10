@@ -245,7 +245,7 @@ def verificarFace(tokens:list, posicion: int, correcto: bool, cards: list):
 
     return correcto, posicion
 
-def verificarPut(tokens:list, posicion: int, correcto: bool, variables: list):
+def verificarPutPick(tokens:list, posicion: int, correcto: bool, variables: list):
 
     inVariable = False
     for i in variables:
@@ -257,40 +257,18 @@ def verificarPut(tokens:list, posicion: int, correcto: bool, variables: list):
         posicion += 1
         if tokens[posicion] == ",":
             posicion += 1
-            if tokens[posicion] == "ballons" or tokens[posicion] == "chips":
+            if tokens[posicion].lower() == "ballons" or tokens[posicion].lower() == "chips":
                 posicion += 1
             else:
                 correcto = False
         else:
-                correcto = False
+            correcto = False
     else:
-                correcto = False
+        correcto = False
 
     return correcto, posicion
 
-def verificarPick(tokens:list, posicion: int, correcto: bool, variables: list):
-    inVariable = False
-    for i in variables:
-        if tokens[posicion] == i:
-            inVariable = True
-            break
-
-    if tokens[posicion].isdigit() or inVariable:
-        posicion += 1
-        if tokens[posicion] == ",":
-            posicion += 1
-            if tokens[posicion] == "ballons" or tokens[posicion] == "chips":
-                posicion += 1
-            else:
-                correcto = False
-        else:
-                correcto = False
-    else:
-                correcto = False
-                
-    return correcto, posicion
-
-def verificarMoveToThe(tokens:list, posicion: int, correcto: bool, variables: list, direcciones1: list):
+def verificarMoveToTheJumpToThe(tokens:list, posicion: int, correcto: bool, variables: list, direcciones1: list):
     inVariable = False
     for i in variables:
         if tokens[posicion] == i:
@@ -308,17 +286,15 @@ def verificarMoveToThe(tokens:list, posicion: int, correcto: bool, variables: li
                     break
                 else:
                     correcto = False
-            else:
-                    correcto = False
         else:
             correcto = False
     else:
-                    correcto = False
+        correcto = False
 
     return correcto, posicion
     
 
-def verificarMoveInDir(tokens:list, posicion: int, correcto: bool, variables: list, cards: list):
+def verificarMoveInDirJumpInDir(tokens:list, posicion: int, correcto: bool, variables: list, cards: list):
     
     inVariable = False
     for i in variables:
@@ -326,61 +302,6 @@ def verificarMoveInDir(tokens:list, posicion: int, correcto: bool, variables: li
             inVariable = True
             break
 
-    cardinalidad = False
-    for i in cards:
-        if tokens[posicion] == i:
-            cardinalidad = True
-            break
-
-    if tokens[posicion].isdigit() or inVariable:
-        posicion += 1
-        if tokens[posicion] == ",":
-            posicion += 1
-            if tokens[posicion] in cardinalidad:
-                posicion += 1
-            else:
-                correcto = False
-        else:
-                correcto = False
-    else:
-                correcto = False
-
-    return correcto, posicion   
-        
-def verificarJumpToThe(tokens:list, posicion: int, correcto: bool, variables: list, direcciones1: list):
-    inVariable = False
-    for i in variables:
-        if tokens[posicion] == i:
-            inVariable = True
-            break
-    
-    if tokens[posicion].isdigit() or inVariable:
-        posicion += 1
-        if tokens[posicion] == ",":
-            posicion += 1
-            for i in direcciones1:
-                if tokens[posicion] == i:
-                    posicion += 1
-                    correcto = True
-                    break
-                else:
-                    correcto = False
-            else:
-                    correcto = False
-        else:
-            correcto = False
-    else:
-                    correcto = False
-
-    return correcto, posicion
-
-def verificarJumpInDir(tokens:list, posicion: int, correcto: bool, variables: list, cards: list):
-    inVariable = False
-    for i in variables:
-        if tokens[posicion] == i:
-            inVariable = True
-            break
-    
     if tokens[posicion].isdigit() or inVariable:
         posicion += 1
         if tokens[posicion] == ",":
@@ -392,14 +313,13 @@ def verificarJumpInDir(tokens:list, posicion: int, correcto: bool, variables: li
                     break
                 else:
                     correcto = False
-            else:
-                    correcto = False
         else:
-                    correcto = False
+            correcto = False
     else:
-                    correcto = False
+        correcto = False
 
-    return correcto, posicion
+    return correcto, posicion   
+        
 
 
 def parser(tokens:list):
