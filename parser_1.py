@@ -582,11 +582,27 @@ def verificarMoveInDirJumpInDir(tokens:list, posicion: int, correcto: bool, vari
 
     return correcto, posicion, tuVieja   
         
-
+def verificarFunciones(tokens: list, posLista: int, funciones: dict, funcionActual: str, correcto: bool, variables: list, finfinal: bool):
+    
+    return correcto, posLista, finfinal
 
 def parser(tokens:list):
     print(tokens)
     correcto, cont = inKeywords(tokens, keywords)
+    finfinal = False
+    while finfinal == False and correcto:
+        for ins in instrucciones:
+            if tokens[cont].lower() == ins.lower():
+                cont += 1
+                correcto, cont, finfinal = verificarComandos(tokens, cont, instrucciones, correcto, variables, finfinal)
+        for funct in funciones.keys():
+            if tokens[cont].lower() == funct.lower():
+                cont += 1
+                if tokens[cont] == ":":
+                    cont += 1
+                    correcto, cont, finfinal = verificarFunciones(tokens, cont, funciones, funct, correcto, variables, finfinal)
+                else:
+                    correcto = False
     print(correcto)
     print(cont)
         
