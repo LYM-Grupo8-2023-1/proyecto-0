@@ -128,35 +128,35 @@ def comprobarPROCS(tokens: list, posLista: int, correcto: bool):
                 break
             posLista += 1
             correcto, posLista, variablesTemporal = verificarParametros(tokens, posLista, correcto, llaveDict)
-            fin2 = False
-            while correcto and fin2 == False:
+            tuVieja = False
+            while correcto and tuVieja == False:
                 for ins in instrucciones:
                     if tokens[posLista] == ins and correcto:
-                        correcto, posLista, fin2 = verificarComandos(tokens, posLista, instrucciones, correcto, variablesTemporal, fin2)
+                        correcto, posLista, tuVieja = verificarComandos(tokens, posLista, instrucciones, correcto, variablesTemporal, tuVieja)
                 if tokens[posLista] == "if" and correcto:
                     posLista += 1
                     if tokens[posLista] == ":":
                         posLista += 1    
-                        correcto, posLista, fin2 = verificarCondicional(tokens, posLista, variablesTemporal, correcto, fin2)
+                        correcto, posLista, tuVieja = verificarCondicional(tokens, posLista, variablesTemporal, correcto, tuVieja)
                     else:
                         correcto = False
                 elif tokens[posLista] == "while" and correcto:
                     posLista += 1
                     if tokens[posLista] == ":":
                         posLista += 1    
-                        verificarLoop()
+                        correcto, posLista, tuVieja = verificarLoop(tokens, posLista, variablesTemporal, correcto, tuVieja)
                     else:
                         correcto = False
                 elif tokens[posLista] == "repeat" and correcto:
                     posLista += 1
                     if tokens[posLista] == ":":
                         posLista += 1    
-                        verificarRepeat()
+                        correcto, posLista, tuVieja = verificarRepeat(tokens, posLista, variablesTemporal, correcto, tuVieja)
                     else:
                         correcto = False
                 if tokens[posLista] == "]":
                     posLista += 1
-                    fin2 = True
+                    tuVieja = True
             if tokens[posLista] == "[":
                 fin = True
                 posLista += 1
@@ -165,149 +165,175 @@ def comprobarPROCS(tokens: list, posLista: int, correcto: bool):
         
     return correcto, posLista
 
-def verificarComandos(tokens: list, posLista: int, instrucciones: list, correcto: bool, variablesTemporal: list, fin2: bool):
-    instruccion = tokens[posLista]
-    if instruccion == instrucciones[0]:
+def verificarComandos(tokens: list, posLista: int, instrucciones: list, correcto: bool, variablesTemporal: list, tuVieja: bool):
+    instruccion = tokens[posLista].lower()
+    if instruccion == instrucciones[0].lower():
         posLista += 1
         if tokens[posLista] == ":":
             posLista += 1    
-            correcto, posLista, fin2 = verificarAssingTo(tokens, posLista, correcto, variablesTemporal, fin2)
+            correcto, posLista, tuVieja = verificarAssingTo(tokens, posLista, correcto, variablesTemporal, tuVieja)
         else:
             correcto = False
-    elif instruccion == instrucciones[1]:
+    elif instruccion == instrucciones[1].lower():
         posLista += 1
         if tokens[posLista] == ":":
             posLista += 1    
-            correcto, posLista, fin2 = verificarGoTo(tokens, posLista, correcto, variablesTemporal, fin2)
+            correcto, posLista, tuVieja = verificarGoTo(tokens, posLista, correcto, variablesTemporal, tuVieja)
         else:
             correcto = False
-    elif instruccion == instrucciones[2]:
+    elif instruccion == instrucciones[2].lower():
         posLista += 1
         if tokens[posLista] == ":":
             posLista += 1    
-            correcto, posLista, fin2 = verificarMove(tokens, posLista, correcto, variablesTemporal, fin2)
+            correcto, posLista, tuVieja = verificarMove(tokens, posLista, correcto, variablesTemporal, tuVieja)
         else:
             correcto = False
-    elif instruccion == instrucciones[3]:
+    elif instruccion == instrucciones[3].lower():
         posLista += 1
         if tokens[posLista] == ":":
             posLista += 1    
-            correcto, posLista, fin2 = verificarTurn(tokens, posLista, correcto, direcciones2, fin2)
+            correcto, posLista, tuVieja = verificarTurn(tokens, posLista, correcto, direcciones2, tuVieja)
         else:
             correcto = False
-    elif instruccion == instrucciones[4]:
+    elif instruccion == instrucciones[4].lower():
         posLista += 1
         if tokens[posLista] == ":":
             posLista += 1    
-            correcto, posLista, fin2 = verificarFace(tokens, posLista, correcto, cards, fin2, True)
+            correcto, posLista, tuVieja = verificarFace(tokens, posLista, correcto, cards, tuVieja, True)
         else:
             correcto = False
-    elif instruccion == instrucciones[5] or instruccion == instrucciones[6]:
+    elif instruccion == instrucciones[5].lower() or instruccion == instrucciones[6].lower():
         posLista += 1
         if tokens[posLista] == ":":
             posLista += 1    
-            correcto, posLista, fin2 = verificarPutPick(tokens, posLista, correcto, variablesTemporal, fin2, True)
+            correcto, posLista, tuVieja = verificarPutPick(tokens, posLista, correcto, variablesTemporal, tuVieja, True)
         else:
             correcto = False
-    elif instruccion == instrucciones[7] or instruccion == instrucciones[9]:
+    elif instruccion == instrucciones[7].lower() or instruccion == instrucciones[9].lower():
         posLista += 1
         if tokens[posLista] == ":":
             posLista += 1    
-            correcto, posLista, fin2 = verificarMoveToTheJumpToThe(tokens, posLista, correcto, variablesTemporal, direcciones1, fin2)
+            correcto, posLista, tuVieja = verificarMoveToTheJumpToThe(tokens, posLista, correcto, variablesTemporal, direcciones1, tuVieja)
         else:
             correcto = False
-    elif instruccion == instrucciones[8] or instruccion == instrucciones[10]:
+    elif instruccion == instrucciones[8].lower() or instruccion == instrucciones[10].lower():
         posLista += 1
         if tokens[posLista] == ":":
             posLista += 1    
-            correcto, posLista, fin2 = verificarMoveInDirJumpInDir(tokens, posLista, correcto, variablesTemporal, cards, fin2, True)
+            correcto, posLista, tuVieja = verificarMoveInDirJumpInDir(tokens, posLista, correcto, variablesTemporal, tuVieja, True)
         else:
             correcto = False
-    elif instruccion == instrucciones[11]:
+    elif instruccion == instrucciones[11].lower():
         posLista += 1
         if tokens[posLista] == ":":
-            posLista += 1    
+            posLista += 1 
+            if tokens[posLista] == ";":
+                posLista += 1
+            elif tokens[posLista] == "]":
+                posLista += 1
+                tuVieja = True
+            else:
+                correcto = False 
         else:
             correcto = False
-    return correcto, posLista, fin2
+    return correcto, posLista, tuVieja
             
-def verificarCondicional(tokens: list, posLista: int, variables:list, correcto: bool, fin2: bool):
+def verificarCondicional(tokens: list, posLista: int, variables:list, correcto: bool, tuVieja: bool):
     for cond in condiciones:
-        if tokens[posLista] == condiciones and correcto:
-           correcto, posLista, fin2 = verificarCondiciones(tokens, posLista, condiciones, correcto, variables, fin2)
-           posLista += 1
+        if tokens[posLista] == cond:
+           correcto, posLista, tuVieja = verificarCondiciones(tokens, posLista, condiciones, correcto, variables, tuVieja)
            break
+        else:
+            correcto = False
     if tokens[posLista] == "then" and tokens[posLista+1] == ":":
         posLista += 2
-        correcto, posLista, fin2 = verificarBloque(tokens, posLista, variables, correcto, fin2, instrucciones)
+        correcto, posLista, tuVieja = verificarBloque(tokens, posLista, variables, correcto, tuVieja, instrucciones)
         if correcto and tokens[posLista] == "else" and tokens[posLista+1] == ":":
             posLista += 2
-            correcto, posLista, fin2 = verificarBloque(tokens, posLista, variables, correcto, fin2, instrucciones)
+            correcto, posLista, tuVieja = verificarBloque(tokens, posLista, variables, correcto, tuVieja, instrucciones)
         else:
             correcto = False
     else:
         correcto = False
-    return correcto, posLista, fin2
+    return correcto, posLista, tuVieja
 
-def verificarBloque(tokens: list, posLista: int, variables:list, correcto: bool, fin2: bool, instrucciones: list):
+def verificarBloque(tokens: list, posLista: int, variables:list, correcto: bool, tuVieja: bool, instrucciones: list):
     if tokens[posLista] == "[":
         posLista += 1
         for ins in instrucciones:
-            if tokens[posLista] == ins and correcto:
-                correcto, posLista, fin2 = verificarComandos(tokens, posLista, instrucciones, correcto, variables, fin2)
+            if tokens[posLista].lower() == ins.lower() and correcto:
+                correcto, posLista, tuVieja = verificarComandos(tokens, posLista, instrucciones, correcto, variables, tuVieja)
                 break
-        if fin2 == True:
-            fin2 = False
+        if tuVieja == True:
+            tuVieja = False
         else:
             correcto = False
     else:
         correcto = False 
-    return correcto, posLista, fin2
+    return correcto, posLista, tuVieja
 
-def verificarCondiciones(tokens: list, posLista: int, condiciones: list, correcto: bool, variablesTemporal: list, fin2: bool):
-    condicion = tokens[posLista]
-    if condicion == condiciones[0]:
+def verificarCondiciones(tokens: list, posLista: int, condiciones: list, correcto: bool, variablesTemporal: list, tuVieja: bool):
+    condicion = tokens[posLista].lower()
+    if condicion == condiciones[0].lower():
         posLista += 1
         if tokens[posLista] == ":":
             posLista += 1    
-            correcto, posLista, fin2 = verificarFace(tokens, posLista, correcto, variables, fin2, False)
+            correcto, posLista, tuVieja = verificarFace(tokens, posLista, correcto, cards, variables, tuVieja, False)
         else:
             correcto = False
-    elif condicion == condiciones[1] or condicion == condiciones[2]:
+    elif condicion == condiciones[1].lower() or condicion == condiciones[2].lower():
         posLista += 1
         if tokens[posLista] == ":":
             posLista += 1    
-            correcto, posLista, fin2 = verificarPutPick(tokens, posLista, correcto, variables, fin2, False)
+            correcto, posLista, tuVieja = verificarPutPick(tokens, posLista, correcto, variables, tuVieja, False)
         else:
             correcto = False
-    elif condicion == condiciones[3] or condicion == condiciones[4]:
+    elif condicion == condiciones[3].lower() or condicion == condiciones[4].lower():
         posLista += 1
         if tokens[posLista] == ":":
             posLista += 1    
-            correcto, posLista, fin2 = verificarMoveInDirJumpInDir(tokens, posLista, correcto, variables, fin2, False)
+            correcto, posLista, tuVieja = verificarMoveInDirJumpInDir(tokens, posLista, correcto, variables, tuVieja, False)
         else:
             correcto = False
-    elif condicion == condiciones[5] or condicion == condiciones[6]:
+    elif condicion == condiciones[5].lower() or condicion == condiciones[6].lower():
         posLista += 1
         if tokens[posLista] == ":":
             posLista += 1    
-            correcto, posLista, fin2 = verificarMoveToTheJumpToThe(tokens, posLista, correcto, variables, fin2, False)
+            correcto, posLista, tuVieja = verificarMoveToTheJumpToThe(tokens, posLista, correcto, variables, direcciones1, tuVieja, False)
         else:
             correcto = False
-    elif condicion == condiciones[7]:
+    elif condicion == condiciones[7].lower():
         posLista += 1
         if tokens[posLista] == ":":
             posLista += 1
-            correcto, posLista, fin2 = verificarCondiciones(tokens, posLista, condiciones, correcto, variables, fin2)
+            correcto, posLista, tuVieja = verificarCondiciones(tokens, posLista, condiciones, correcto, variables, tuVieja)
         else:
             correcto = False
-    return correcto, posLista, fin2
+    return correcto, posLista, tuVieja
 
-def verificarLoop():
-    pass #Arreglar como saber que condicion usar
+def verificarLoop(tokens: list, posLista: int, variables:list, correcto: bool, tuVieja: bool):
+    for cond in condiciones:
+        if tokens[posLista].lower() == cond.lower():
+            correcto = True
+            correcto, posLista, tuVieja = verificarCondiciones(tokens, posLista, condiciones, correcto, variables, tuVieja)
+            posLista += 1
+            break
+        else:
+            correcto = False
+    if tokens[posLista] == "do" and tokens[posLista+1] == ":":
+        posLista += 2
+        correcto, posLista, tuVieja = verificarBloque(tokens, posLista, variables, correcto, tuVieja, instrucciones)
+    else:
+        correcto = False
+    return correcto, posLista, tuVieja
 
-def verificarRepeat():
-    pass #Arreglar como saber que condicion usar
+def verificarRepeat(tokens: list, posLista: int, variables:list, correcto: bool, tuVieja: bool):
+    if tokens[posLista].isdigit():
+        posLista += 1
+        correcto, posLista, tuVieja = verificarBloque(tokens, posLista, variables, correcto, tuVieja, instrucciones)
+    else:
+        correcto = False
+    return correcto, posLista, tuVieja
 
 def inKeywords(tokens:list, keywords:list):
 
@@ -330,7 +356,7 @@ def inKeywords(tokens:list, keywords:list):
         
     return correcto, cont
     
-def verificarAssingTo(tokens:list, posicion: int, correcto: bool, variables: list, fin2: bool):
+def verificarAssingTo(tokens:list, posicion: int, correcto: bool, variables: list, tuVieja: bool):
     
     if tokens[posicion].isdigit():
         posicion += 1
@@ -347,16 +373,16 @@ def verificarAssingTo(tokens:list, posicion: int, correcto: bool, variables: lis
                 posicion += 1
             elif tokens[posicion] == "]":
                 posicion += 1
-                fin2 = True
+                tuVieja = True
             else:
                 correcto = False
         else:
             correcto = False
     else:
         correcto = False
-    return correcto, posicion, fin2
+    return correcto, posicion, tuVieja
 
-def verificarGoTo(tokens:list, posicion: int, correcto: bool, variables: list, fin2: bool):
+def verificarGoTo(tokens:list, posicion: int, correcto: bool, variables: list, tuVieja: bool):
 
     inVariable = False
     for i in variables:
@@ -381,7 +407,7 @@ def verificarGoTo(tokens:list, posicion: int, correcto: bool, variables: list, f
                 posicion += 1
             elif tokens[posicion] == "]":
                 posicion += 1
-                fin2 = True
+                tuVieja = True
             else:
                 correcto = False
         else:
@@ -389,10 +415,10 @@ def verificarGoTo(tokens:list, posicion: int, correcto: bool, variables: list, f
     else:
         correcto = False
 
-    return correcto, posicion, fin2
+    return correcto, posicion, tuVieja
 
 
-def verificarMove(tokens:list, posicion: int, correcto: bool, variables: list, fin2: bool):
+def verificarMove(tokens:list, posicion: int, correcto: bool, variables: list, tuVieja: bool):
 
     inVariable = False
     for i in variables:
@@ -410,13 +436,13 @@ def verificarMove(tokens:list, posicion: int, correcto: bool, variables: list, f
         posicion += 1
     elif tokens[posicion] == "]":
         posicion += 1
-        fin2 = True
+        tuVieja = True
     else:
         correcto = False
 
-    return correcto, posicion, fin2
+    return correcto, posicion, tuVieja
 
-def verificarTurn(tokens:list, posicion: int, correcto: bool, direcciones2: list, fin2: bool):
+def verificarTurn(tokens:list, posicion: int, correcto: bool, direcciones2: list, tuVieja: bool):
 
     inDireccion2 = False
     for i in direcciones2:
@@ -430,9 +456,9 @@ def verificarTurn(tokens:list, posicion: int, correcto: bool, direcciones2: list
     else:
         correcto = False
 
-    return correcto, posicion, fin2
+    return correcto, posicion, tuVieja
 
-def verificarFace(tokens:list, posicion: int, correcto: bool, cards: list, fin2: bool, isInstruccion: bool):
+def verificarFace(tokens:list, posicion: int, correcto: bool, cards: list, tuVieja: bool, isInstruccion: bool):
 
     cardinalidad = False
     for i in cards:
@@ -451,13 +477,13 @@ def verificarFace(tokens:list, posicion: int, correcto: bool, cards: list, fin2:
             posicion += 1
         elif tokens[posicion] == "]":
             posicion += 1
-            fin2 = True
+            tuVieja = True
         else:
             correcto = False
 
-    return correcto, posicion, fin2
+    return correcto, posicion, tuVieja
 
-def verificarPutPick(tokens:list, posicion: int, correcto: bool, variables: list, fin2: bool, isInstruccion: bool):
+def verificarPutPick(tokens:list, posicion: int, correcto: bool, variables: list, tuVieja: bool, isInstruccion: bool):
 
     inVariable = False
     for i in variables:
@@ -478,7 +504,7 @@ def verificarPutPick(tokens:list, posicion: int, correcto: bool, variables: list
                     posicion += 1
                 elif tokens[posicion] == "]":
                     posicion += 1
-                    fin2 = True
+                    tuVieja = True
                 else:
                     correcto = False
         else:
@@ -486,9 +512,9 @@ def verificarPutPick(tokens:list, posicion: int, correcto: bool, variables: list
     else:
         correcto = False
 
-    return correcto, posicion, fin2
+    return correcto, posicion, tuVieja
 
-def verificarMoveToTheJumpToThe(tokens:list, posicion: int, correcto: bool, variables: list, direcciones1: list, fin2: bool, isInstruccion: bool):
+def verificarMoveToTheJumpToThe(tokens:list, posicion: int, correcto: bool, variables: list, direcciones1: list, tuVieja: bool, isInstruccion: bool):
     inVariable = False
     for i in variables:
         if tokens[posicion] == i:
@@ -511,7 +537,7 @@ def verificarMoveToTheJumpToThe(tokens:list, posicion: int, correcto: bool, vari
                     posicion += 1
                 elif tokens[posicion] == "]":
                     posicion += 1
-                    fin2 = True
+                    tuVieja = True
                 else:
                     correcto = False
         else:
@@ -519,10 +545,10 @@ def verificarMoveToTheJumpToThe(tokens:list, posicion: int, correcto: bool, vari
     else:
         correcto = False
 
-    return correcto, posicion, fin2
+    return correcto, posicion, tuVieja
     
 
-def verificarMoveInDirJumpInDir(tokens:list, posicion: int, correcto: bool, variables: list, cards: list, fin2: bool, isInstruccion: bool):
+def verificarMoveInDirJumpInDir(tokens:list, posicion: int, correcto: bool, variables: list, tuVieja: bool, isInstruccion: bool):
     
     inVariable = False
     for i in variables:
@@ -534,8 +560,8 @@ def verificarMoveInDirJumpInDir(tokens:list, posicion: int, correcto: bool, vari
         posicion += 1
         if tokens[posicion] == ",":
             posicion += 1
-            for i in cards:
-                if tokens[posicion] == i:
+            for cardinal in card:
+                if tokens[posicion] == cardinal:
                     posicion += 1
                     correcto = True
                     break
@@ -546,7 +572,7 @@ def verificarMoveInDirJumpInDir(tokens:list, posicion: int, correcto: bool, vari
                     posicion += 1
                 elif tokens[posicion] == "]":
                     posicion += 1
-                    fin2 = True
+                    tuVieja = True
                 else:
                     correcto = False
         else:
@@ -554,7 +580,7 @@ def verificarMoveInDirJumpInDir(tokens:list, posicion: int, correcto: bool, vari
     else:
         correcto = False
 
-    return correcto, posicion, fin2   
+    return correcto, posicion, tuVieja   
         
 
 
