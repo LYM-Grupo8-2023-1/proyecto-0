@@ -583,7 +583,24 @@ def verificarMoveInDirJumpInDir(tokens:list, posicion: int, correcto: bool, vari
     return correcto, posicion, tuVieja   
         
 def verificarFunciones(tokens: list, posLista: int, funciones: dict, funcionActual: str, correcto: bool, variables: list, finfinal: bool):
-    
+    cantidadParametros = len(funciones[funcionActual])
+    j = 0
+    while j < cantidadParametros and correcto and finfinal == False:
+        inVariable = False
+        for i in variables:
+            if tokens[posLista] == i:
+                inVariable = True
+                break
+
+        if tokens[posLista].isdigit() or inVariable:
+            posLista += 1
+            j += 1
+            if tokens[posLista] == ",":
+                posLista += 1
+            elif tokens[posLista] == "]":
+                finfinal = True
+        else:
+            correcto = False
     return correcto, posLista, finfinal
 
 def parser(tokens:list):
@@ -593,9 +610,9 @@ def parser(tokens:list):
     while finfinal == False and correcto:
         for ins in instrucciones:
             if tokens[cont].lower() == ins.lower():
-                cont += 1
                 correcto, cont, finfinal = verificarComandos(tokens, cont, instrucciones, correcto, variables, finfinal)
         for funct in funciones.keys():
+            x = tokens[cont]
             if tokens[cont].lower() == funct.lower():
                 cont += 1
                 if tokens[cont] == ":":
@@ -603,8 +620,10 @@ def parser(tokens:list):
                     correcto, cont, finfinal = verificarFunciones(tokens, cont, funciones, funct, correcto, variables, finfinal)
                 else:
                     correcto = False
-    print(correcto)
-    print(cont)
+    if correcto:
+        print("Su sintaxis es correcta")
+    else:
+        print("Su sintaxis es incorrecta, porfavor revise de nuevo")
         
 
 main()
